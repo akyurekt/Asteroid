@@ -69,17 +69,22 @@ class MyGLSurfaceView extends GLSurfaceView implements SensorEventListener{
         setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
 
 
+
     }
     @Override
     public void onResume(){
         super.onResume();
         mSensorManager.registerListener(this, mSensor, SensorManager.SENSOR_DELAY_NORMAL);
 
+        Log.i("On", "Resume "  );
+
     }
     @Override
     public void onPause() {
         super.onPause();
         mSensorManager.unregisterListener(this);
+        Log.i("On", "Pause "  );
+        Sound(1);
     }
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
     }
@@ -98,7 +103,7 @@ class MyGLSurfaceView extends GLSurfaceView implements SensorEventListener{
 
     public void onSensorChanged(SensorEvent event) {
 
-        Log.i("sensor", "test"+event);
+       // Log.i("sensor", "test"+event);
         // This timestep's delta rotation to be multiplied by the current rotation
         // after computing it from the gyro sample data.
         if (timestamp != 0) {
@@ -121,13 +126,13 @@ class MyGLSurfaceView extends GLSurfaceView implements SensorEventListener{
             }
 
             mSensorManager.getQuaternionFromVector(mRenderer.quat,event.values);
-
+        /*
             Log.i("Sensor Orientation GyroScope", "axisX: " + mRenderer.quat[0] + //
                     " axisY: " +mRenderer.quat[1] + //
                     " axisZ: " + mRenderer.quat[2]+
                     "omegamagnitude" +omegaMagnitude
                     );
-
+           */
         }
         timestamp = event.timestamp;
 
@@ -139,20 +144,51 @@ class MyGLSurfaceView extends GLSurfaceView implements SensorEventListener{
 
 
     public void Sound(int file){
-        MediaPlayer mp = MediaPlayer.create(OpenGLES20Activity.getAppContext(), R.raw.sound_file_1);
-        if(file==1) {
 
-            mp.start();
-            file = 0;
-            mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+
+
+
+       if(file==0) {
+           MediaPlayer mp = MediaPlayer.create(OpenGLES20Activity.getAppContext(), R.raw.bayo_after_burner);
+
+
+           if (mp.isPlaying()) {
+
+               mp.pause();
+               mp.stop();
+               mp.release();
+               Log.i("is", "playing  "  );
+           } else {
+                mp.start();
+           }
+                file = -1;
+                mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                    @Override
+                    public void onCompletion(MediaPlayer mp) {
+                        mp.stop();
+                        mp.release();
+                    }
+                });
+            }
+
+
+
+         else if(file==0) {
+            MediaPlayer mp2 = MediaPlayer.create(OpenGLES20Activity.getAppContext(), R.raw.sound_file_1);
+            mp2.start();
+            file = -1;
+            mp2.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                 @Override
-                public void onCompletion(MediaPlayer mp) {
-                    mp.stop();
+                public void onCompletion(MediaPlayer mp2) {
+                    mp2.stop();
                 //    mp.reset();
-                    mp.release();
+                    mp2.release();
                 }
             });
         }
+
+
+
 
 
 
@@ -160,6 +196,7 @@ class MyGLSurfaceView extends GLSurfaceView implements SensorEventListener{
 
     @Override
     public boolean onTouchEvent(MotionEvent e) {
+
       //  mRenderer.iftouch=false;
 
         // MotionEvent reports input details from the touch screen
@@ -170,6 +207,7 @@ class MyGLSurfaceView extends GLSurfaceView implements SensorEventListener{
 
         switch (e.getAction()) {
             case MotionEvent.ACTION_MOVE:
+
                 float dx = x - mPreviousX;
                 float dy = y - mPreviousY;
 
@@ -222,12 +260,12 @@ class MyGLSurfaceView extends GLSurfaceView implements SensorEventListener{
                     {
                         mRenderer.ifpinch=true;
 
-                        Sound(1);
+                        Sound(0);
 
                     }
                     mPreviousX2=x2;
                     mPreviousY2=y2;
-
+                    Sound(2);
                 }
 
                 else{

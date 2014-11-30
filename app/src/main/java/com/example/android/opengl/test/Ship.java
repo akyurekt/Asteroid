@@ -30,9 +30,9 @@ public class Ship {
     private final String vertexShaderCode =
             // This matrix member variable provides a hook to manipulate
             // the coordinates of the objects that use this vertex shader
-            "uniform mat4 uMVPMatrix;" +
-            "attribute vec4 vPosition;" +
-            "void main() {" +
+            "uniform mat4 uMVPMatrix;    " +
+            "attribute vec4 vPosition;    " +
+            "void main() {                " +
             // The matrix must be included as a modifier of gl_Position.
             // Note that the uMVPMatrix factor *must be first* in order
             // for the matrix multiplication product to be correct.
@@ -42,7 +42,7 @@ public class Ship {
 
     private final String fragmentShaderCode =
             "precision mediump float;" +
-            "varying vec4 vColor;" +
+            "uniform vec4 vColor;" +
             "void main() {" +
             "  gl_FragColor = vColor;" +
             "}";
@@ -83,15 +83,15 @@ public class Ship {
     private final int vertexStride = COORDS_PER_VERTEX * 4; // 4 bytes per vertex
 
     float color[] = { 0f, 1f, 0f, 1f,
-            0f, 0f, 1f, 1f,
-            1f, 0f, 0f, 1f,
-            0f, 1f, 1f, 1f,
-            0f, 1f, 0f, 1f,
-            0f, 1f, 0f, 1f,
-            0f, 1f, 0f, 1f,
-            0f, 1f, 0f, 1f,
-            0f, 1f, 0f, 1f,
-            0f, 1f, 0f, 1f,};
+                        0f, 0f, 1f, 1f,
+                        1f, 0f, 0f, 1f,
+                        0f, 1f, 1f, 1f,
+                        0f, 1f, 0f, 1f,
+                        0f, 1f, 0f, 1f,
+                        0f, 1f, 0f, 1f,
+                        0f, 1f, 0f, 1f,
+                        0f, 1f, 0f, 1f,
+                        0f, 1f, 0f, 1f,};
 
     /**
      * Sets up the drawing object data for use in an OpenGL ES context.

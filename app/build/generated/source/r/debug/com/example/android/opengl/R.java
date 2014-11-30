@@ -23,12 +23,13 @@ public final class R {
         public static final int Title=0x7f060001;
     }
     public static final class layout {
-        public static final int table_of_contents=0x7f030000;
-        public static final int toc_item=0x7f030001;
+        public static final int main=0x7f030000;
+        public static final int table_of_contents=0x7f030001;
+        public static final int toc_item=0x7f030002;
     }
     public static final class raw {
-        public static final int sound_file_1=0x7f040000;
-        public static final int untitled=0x7f040001;
+        public static final int bayo_after_burner=0x7f040000;
+        public static final int sound_file_1=0x7f040001;
     }
     public static final class string {
         public static final int app_name=0x7f050000;

@@ -2,12 +2,14 @@ package com.example.android.opengl.test;
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
-import android.graphics.Point;
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
 import android.opengl.Matrix;
 import android.os.SystemClock;
 import android.util.Log;
+
+import java.security.SecureRandom;
+import java.util.Random;
 
 /**
  * Provides drawing instructions for a GLSurfaceView object. This class
@@ -24,6 +26,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     private Triangle mTriangle;
     private Triangle mTriangle2;
     private Ship mShip;
+    private Cube mCube;
 
     // mMVPMatrix is an abbreviation for "Model View Projection Matrix"
     private final float[] mMVPMatrix = new float[16];
@@ -37,45 +40,27 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     public boolean ifzoom = false;
     public boolean ifpinch = false;
     public float counter = 1;
-    public float rotatex;
+    private float[] mTempMatrix = new float[16];
+    public float timex=1;
+    public int numberofass=4;
+
 
     private float mAngle;
     public volatile float[] quat = {1,0,0,0};
 
+    public float ypos1=2.5f;
+    public float xpos1=0f;
+    public float xpos2=2.5f;
+    public float ypos2=0f;
+    public float xpos3=-2.5f;
+    public float ypos3=0f;
+    public float xpos4=0f;
+    public float ypos4=-2.5f;
+
 
     public float screenheight;
     public float screenwidth;
-    private boolean pressed = false;
-    private Point position;
-    private final float[] invertedViewProjectionMatrix = new float[16];
 
-
-    /**
-     * Store our model data in a float buffer.
-     */
-
-
-    /**
-     * This will be used to pass in the texture.
-     */
-    private int mTextureUniformHandle;
-
-    /**
-     * This will be used to pass in model texture coordinate information.
-     */
-    private int mTextureCoordinateHandle;
-
-    /**
-     * Size of the texture coordinate data in elements.
-     */
-    private final int mTextureCoordinateDataSize = 2;
-    private int mTextureDataHandle;
-
-    /**
-     * This is a handle to our texture data.
-     */
-
-    //mActivityContext = activityContext;
     @Override
     public void onSurfaceCreated(GL10 unused, EGLConfig config) {
 
@@ -90,7 +75,8 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         mTriangle = new Triangle();
         mTriangle2 = new Triangle();
         mShip = new Ship();
-        // position= new Point(0f ,0.5f , 0.4f);
+        mCube = new Cube();
+
     }
 
     private float clamp(float value, float min, float max) {
@@ -103,34 +89,113 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
 
         float[] scratch = new float[16];
+        long time = SystemClock.uptimeMillis() % 4000L;
+        timex++;
+
 
         // Draw background color
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
         Matrix.setLookAtM(mViewMatrix, 0, 0, 0, -3, 0f, 0f, 0f, 0f, 1.0f, 0.0f);
+        //Matrix.translateM(mViewMatrix,0,0,0,timex);
+
         Matrix.multiplyMM(mMVPMatrix, 0, mProjectionMatrix, 0, mViewMatrix, 0);
 
 
+
+
+
         // Calculate the projection and view transformation
-        long time = SystemClock.uptimeMillis() % 4000L;
-        float angle = 0.090f * ((int) time);
-       // Matrix.setRotateM(mRotationMatrix,0, angle,quat[1],quat[2],quat[3]);
-       //  Matrix.setRotateM(mRotationMatrix,0,rotatex*100f,1f,1f,1f);
+      //  mSquare.draw(mMVPMatrix);
         Matrix.setRotateM(mRotationMatrix,0, (float)(2.0f*Math.acos(quat[0])*180.0f/Math.PI),quat[1],quat[2],quat[3]);
-        Matrix.multiplyMM(scratch, 0,mMVPMatrix , 0,mRotationMatrix, 0);
-         Matrix.scaleM(scratch,1,.5f,.5f,.5f);
-        Matrix.translateM(scratch,0,1f,1f,1f);
+
+       // Matrix.setRotateM(mRotationMatrix,0,0f,0f,0f,0f);
+        //scratch=mMVPMatrix.clone();
+          Matrix.multiplyMM(scratch, 0,mMVPMatrix , 0,mRotationMatrix, 0);
+        //  Matrix.scaleM(scratch,1,0.1f,0.1f,0.1f);
+          Matrix.scaleM(mMVPMatrix,0,0.5f,0.5f,0.5f);
+
+        //draw and position the astreoids
+        mTempMatrix=mMVPMatrix.clone();
+
+        float pos1=250f-timex;
+        float pos2=170f-timex;
+        float pos3=150f-timex;
+        float pos4=200f-timex;
+
+
+
+        if((numberofass<-30)) {
+            timex = timex - 350f;
+            numberofass = 4;
+
+            //new seeds.securerandom has better seed and longer bit
+            SecureRandom x1= new SecureRandom();
+            SecureRandom y1= new SecureRandom();
+            SecureRandom x2= new SecureRandom();
+            SecureRandom y2= new SecureRandom();
+            SecureRandom x3= new SecureRandom();
+            SecureRandom y3= new SecureRandom();
+            SecureRandom x4= new SecureRandom();
+            SecureRandom y4= new SecureRandom();
+
+            //use it obtain value
+            float randomValue1  =  -5f  +  (5f +5f) * x1.nextFloat();
+            float randomValue2  =  -5f  +  (5f +5f) * y1.nextFloat();
+            float randomValue3  =  -5f  +  (5f +5f) * x2.nextFloat();
+            float randomValue4  =  -5f  +  (5f +5f) * y2.nextFloat();
+            float randomValue5  =  -5f  +  (5f +5f) * x3.nextFloat();
+            float randomValue6  =  -5f  +  (5f +5f) * y3.nextFloat();
+            float randomValue7  =  -5f  +  (5f +5f) * x4.nextFloat();
+            float randomValue8  =  -5f  +  (5f +5f) * y4.nextFloat();
+
+            xpos1=randomValue1;
+            ypos1=randomValue2;
+            ypos2=randomValue3;
+            xpos2=randomValue4;
+            ypos3=randomValue5;
+            xpos3=randomValue6;
+            ypos4=randomValue7;
+            xpos4=randomValue8;
+
+
+            Log.i("xpos1", "ypos1 " + xpos1 + ypos1 );
+            Log.i("xpos2", "ypos2 " +xpos2+ypos2  );
+            Log.i("xpos3", "ypos3 " + xpos3+ ypos4  );
+            Log.i("xpos4", "ypos4 " + xpos4 +ypos4  );
+
+        }
+
+        if((300f-timex)<0)
+            numberofass--;
+
+        Matrix.translateM(mTempMatrix,0,xpos1,ypos1,pos1);
+        mCube.draw(mTempMatrix);
+        mTempMatrix=mMVPMatrix.clone();
+        Matrix.translateM(mTempMatrix,0,xpos2,ypos2,pos2);
+        mCube.draw(mTempMatrix);
+        mTempMatrix=mMVPMatrix.clone();
+        Matrix.translateM(mTempMatrix,0,xpos3,ypos3,pos3);
+        mCube.draw(mTempMatrix);
+        mTempMatrix=mMVPMatrix.clone();
+        Matrix.translateM(mTempMatrix,0,xpos4,ypos4,pos4);
+        mCube.draw(mTempMatrix);
+
+
+       // Log.i("number of", "asstroids: " + numberofass  );
+       // Log.i("time", "value  " + timex  );
+
+
+
+
+
         // Draw square
-        mShip.draw(scratch);
+        Matrix.scaleM(scratch,0,0.1f,0.1f,0.1f);
+      //  Matrix.translateM(scratch,0, 0f,0f,timex);
+
+         mShip.draw(scratch);
 
 
-        Matrix.setLookAtM(mViewMatrix, 0, 0, 0, 3, 0f, 0f, 0f, 0f, 1.0f, 0.0f);
-        // Use the following code to generate constant rotation.
-        // Leave this code out when using TouchEvents.
-      //  Matrix.setRotateM(mRotationMatrix,0, (float)(2.0f*Math.acos(quat[0])*180.0f/Math.PI),quat[1],quat[2],quat[3]);
 
-        Matrix.multiplyMM(mMVPMatrix, 0, mProjectionMatrix, 0, mMVPMatrix, 0);
-
-        mTriangle.draw(mMVPMatrix);
 
 
     }
