@@ -1,12 +1,12 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 8
+    compileSdkVersion 16
     buildToolsVersion "20.0.0"
 
     defaultConfig {
         applicationId "com.example.android.opengl"
-        minSdkVersion 8
+        minSdkVersion 16
         targetSdkVersion 17
     }
 

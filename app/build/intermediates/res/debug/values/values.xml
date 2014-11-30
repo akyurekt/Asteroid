@@ -2,6 +2,9 @@
 <resources>
     <!-- From: file:/C:/Users/Thomas/AndroidStudioProjects/HelloOpenGLES203/app/src/main/res/values/strings.xml -->
     <eat-comment/>
-    <string name="app_name">Hello OpenGL ES 2.0</string>
+    <string name="app_name">Learn OpenGL ES Tutorials</string>
     <string name="hello">Hello, OpenGL ES 2.0!</string>
+    <string name="menu_title">Main Menu</string>
+    <string name="model_viewer_subtitle">View and compare the planes</string>
+    <string name="model_viewer_title">Gallery</string>
 </resources>

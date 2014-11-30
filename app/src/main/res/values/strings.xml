@@ -17,6 +17,9 @@
 <resources>
 
     <string name="hello">Hello, OpenGL ES 2.0!</string>
-    <string name="app_name">Hello OpenGL ES 2.0</string>
+    <string name="app_name">Learn OpenGL ES Tutorials</string>
+    <string name="menu_title">Main Menu</string>
 
+    <string name="model_viewer_title">Gallery</string>
+    <string name="model_viewer_subtitle">View and compare the planes</string>
 </resources>
