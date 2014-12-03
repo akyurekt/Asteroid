@@ -48,7 +48,9 @@ public class    MyGLRenderer implements GLSurfaceView.Renderer {
     public float counter = 1;
     private float[] mTempMatrix = new float[16];
     public float timex=1;
+    public float timex2=1;
     public int numberofass=4;
+    public int numberofass2=4;
     public int counterofdeath=0;
 
 
@@ -67,6 +69,15 @@ public class    MyGLRenderer implements GLSurfaceView.Renderer {
     public float ypos3=0f;
     public float xpos4=0f;
     public float ypos4=-2.5f;
+
+    public float xpos5=0.75f;
+    public float ypos5=-0.5f;
+    public float xpos6=-0.750f;
+    public float ypos6=-0.5f;
+    public float xpos7=0.75f;
+    public float ypos7=-0.5f;
+    public float xpos8=-0.75f;
+    public float ypos8=-0.5f;
 
 
     public float screenheight;
@@ -135,6 +146,8 @@ public class    MyGLRenderer implements GLSurfaceView.Renderer {
                 float[] scratch = new float[16];
                 long time = SystemClock.uptimeMillis() % 4000L;
                 timex++;
+                timex2++;
+
 
 
                 // Draw background color
@@ -168,6 +181,11 @@ public class    MyGLRenderer implements GLSurfaceView.Renderer {
                 float pos3 = 150f - timex;
                 float pos4 = 200f - timex;
 
+                float pos5 = 200f - timex;
+                float pos6 = 200f - timex;
+                float pos7 = 200f - timex;
+                float pos8 = 200f - timex;
+
 
                 if ((numberofass < -30)) {
                     timex = timex - 350f;
@@ -183,16 +201,35 @@ public class    MyGLRenderer implements GLSurfaceView.Renderer {
                     SecureRandom x4 = new SecureRandom();
                     SecureRandom y4 = new SecureRandom();
 
-                    //use it obtain value
-                    float randomValue1 = -5f + (5f + 5f) * x1.nextFloat();
-                    float randomValue2 = -5f + (5f + 5f) * y1.nextFloat();
-                    float randomValue3 = -5f + (5f + 5f) * x2.nextFloat();
-                    float randomValue4 = -5f + (5f + 5f) * y2.nextFloat();
-                    float randomValue5 = -5f + (5f + 5f) * x3.nextFloat();
-                    float randomValue6 = -5f + (5f + 5f) * y3.nextFloat();
-                    float randomValue7 = -5f + (5f + 5f) * x4.nextFloat();
-                    float randomValue8 = -5f + (5f + 5f) * y4.nextFloat();
+                    SecureRandom x5 = new SecureRandom();
+                    SecureRandom y5 = new SecureRandom();
+                    SecureRandom x6 = new SecureRandom();
+                    SecureRandom y6 = new SecureRandom();
+                    SecureRandom x7 = new SecureRandom();
+                    SecureRandom y7 = new SecureRandom();
+                    SecureRandom x8 = new SecureRandom();
+                    SecureRandom y8 = new SecureRandom();
 
+
+                    //use it obtain value
+                    float randomValue1 = -5f + (5f + 5f) * x1.nextFloat();//anywhere in the whole screen
+                    float randomValue2 = -5f + (5f + 5f) * y1.nextFloat();//anywhere in the whole screen
+                    float randomValue3 = -5f + (5f + 5f) * x2.nextFloat();//anywhere in the whole screen
+                    float randomValue4 = -5f + (5f + 5f) * y2.nextFloat();//anywhere in the whole screen
+                    float randomValue5 = -5f + (5f + 5f) * x3.nextFloat();//anywhere in the whole screen
+                    float randomValue6 = -5f + (5f + 5f) * y3.nextFloat();//anywhere in the whole screen
+                    float randomValue7 = -5f + (5f + 5f) * x4.nextFloat();//anywhere in the whole screen
+                    float randomValue8 = -5f + (5f + 5f) * y4.nextFloat();//anywhere in the whole screen
+
+                    float randomValue9 = -5f + (5f + 5f) * x5.nextFloat();//top left quad
+                    float randomValue10 = -5f + (5f + 5f) * y5.nextFloat();//top left quad
+                    float randomValue11 = -5f + (5f + 5f) * x6.nextFloat();//top right quad
+                    float randomValue12 = -5f + (5f + 5f) * y6.nextFloat();//top right quad
+                    float randomValue13 = -5f + (5f + 5f) * x7.nextFloat();//
+                    float randomValue14= -5f + (5f + 5f) * y7.nextFloat();//
+                    float randomValue15= -5f + (5f + 5f) * x8.nextFloat();//
+                    float randomValue16= -5f + (5f + 5f) * y8.nextFloat();//
+//
                     xpos1 = randomValue1;
                     ypos1 = randomValue2;
                     ypos2 = randomValue3;
@@ -201,6 +238,15 @@ public class    MyGLRenderer implements GLSurfaceView.Renderer {
                     xpos3 = randomValue6;
                     ypos4 = randomValue7;
                     xpos4 = randomValue8;
+
+                    ypos5 = randomValue9;
+                    xpos5 = randomValue10;
+                    ypos6 = randomValue11;
+                    xpos6 = randomValue12;
+                    ypos7 = randomValue13;
+                    xpos7 = randomValue14;
+                    ypos8 = randomValue15;
+                    xpos8 = randomValue16;
 
 
 
@@ -212,7 +258,6 @@ public class    MyGLRenderer implements GLSurfaceView.Renderer {
 
                 mTempMatrix = mMVPMatrix.clone();
                 Matrix.translateM(mTempMatrix, 0, xpos1, ypos1, pos1);
-                // Matrix.translateM(mTempMatrix,0,5f,5f,2f);
                 mCube.draw(mTempMatrix);
 
                 mTempMatrix = mMVPMatrix.clone();
@@ -228,6 +273,23 @@ public class    MyGLRenderer implements GLSurfaceView.Renderer {
                 mCube.draw(mTempMatrix);
 
 
+        mTempMatrix = mMVPMatrix.clone();
+        Matrix.translateM(mTempMatrix, 0, xpos5, ypos5, pos5);
+        mCube.draw(mTempMatrix);
+
+        mTempMatrix = mMVPMatrix.clone();
+        Matrix.translateM(mTempMatrix, 0, xpos6, ypos6, pos6);
+        mCube.draw(mTempMatrix);
+
+        mTempMatrix = mMVPMatrix.clone();
+        Matrix.translateM(mTempMatrix, 0, xpos7, ypos7, pos7);
+        mCube.draw(mTempMatrix);
+
+        mTempMatrix = mMVPMatrix.clone();
+        Matrix.translateM(mTempMatrix, 0, xpos8, ypos8, pos8);
+        mCube.draw(mTempMatrix);
+
+
 
 
                 // Draw square
@@ -240,6 +302,11 @@ public class    MyGLRenderer implements GLSurfaceView.Renderer {
                 float distancebet2 = ((axisx - xpos2) * (axisx - xpos2)) + ((axisy - ypos2) * (axisy - ypos2));
                 float distancebet3 = ((axisx - xpos3) * (axisx - xpos3)) + ((axisy - ypos3) * (axisy - ypos3));
                 float distancebet4 = ((axisx - xpos4) * (axisx - xpos4)) + ((axisy - ypos4) * (axisy - ypos4));
+
+        float distancebet5 = ((axisx - xpos5) * (axisx - xpos5)) + ((axisy - ypos5) * (axisy - ypos5));
+        float distancebet6 = ((axisx - xpos6) * (axisx - xpos6)) + ((axisy - ypos6) * (axisy - ypos6));
+        float distancebet7 = ((axisx - xpos7) * (axisx - xpos7)) + ((axisy - ypos7) * (axisy - ypos7));
+        float distancebet8 = ((axisx - xpos8) * (axisx - xpos8)) + ((axisy - ypos8) * (axisy - ypos8));
 
 
                 //testing for collision
@@ -263,11 +330,31 @@ public class    MyGLRenderer implements GLSurfaceView.Renderer {
                         collision = true;
                     }
                 }
+                if (pos5 > 0 && pos5 < 10) {
+                    if (distancebet5 < 1) {
+                        collision = true;
+                    }
+                }
+                if (pos6 > 0 && pos6 < 10) {
+                    if (distancebet6 < 1) {
+                        collision = true;
+                    }
+                }
+                if (pos7 > 0 && pos7 < 10) {
+                    if (distancebet7 < 1) {
+                        collision = true;
+                    }
+                }
+                if (pos8 > 0 && pos8 < 10) {
+                    if (distancebet8 < 1) {
+                        collision = true;
+                    }
+                }
 
 
-                Log.i("The", "collision  " + collision);
-                // Log.i("xpos1", "ypos1 " + xpos1 + ypos1 );
-                if (collision == false) {
+                        Log.i("The", "collision  " + collision);
+                        // Log.i("xpos1", "ypos1 " + xpos1 + ypos1 );
+                        if (collision == false) {
                     mShip.draw(scratch);
                 } else {
 
@@ -369,21 +456,31 @@ public class    MyGLRenderer implements GLSurfaceView.Renderer {
 
 
     //controlls sound files
-    public void sound(int counter)
-    {
-        if(counter==1) {
-            MediaPlayer mp2 = MediaPlayer.create(OpenGLES20Activity.getAppContext(), R.raw.death_file_1);
-            mp2.start();
+    public void sound(int counter) {
+        if (counter == 1) {
+            SecureRandom deathseed = new SecureRandom();
+            float deathtune = 5f + (5f + 5f) * deathseed.nextFloat();
 
-            mp2.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                @Override
-                public void onCompletion(MediaPlayer mp2) {
-                    mp2.stop();
-                    //    mp.reset();
+            if ((deathtune < 1) && (deathtune > 0)) {
+                MediaPlayer mp2 = MediaPlayer.create(OpenGLES20Activity.getAppContext(), R.raw.death_file_1);
+                mp2.start();
 
-                    mp2.release();
-                }
-            });
+                mp2.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                    @Override
+                    public void onCompletion(MediaPlayer mp2) {
+                        mp2.stop();
+                        //    mp.reset();
+
+                        mp2.release();
+                    }
+                });
+
+
+            }
+
+
+
+
 
         }
     }
