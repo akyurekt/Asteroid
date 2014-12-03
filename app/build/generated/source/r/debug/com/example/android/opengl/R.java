@@ -16,6 +16,7 @@ public final class R {
         public static final int ic_lesson_one=0x7f020002;
         public static final int icon_border=0x7f020003;
         public static final int menu_background=0x7f020004;
+        public static final int you_died=0x7f020005;
     }
     public static final class id {
         public static final int Image=0x7f060000;
@@ -29,7 +30,12 @@ public final class R {
     }
     public static final class raw {
         public static final int bayo_after_burner=0x7f040000;
-        public static final int sound_file_1=0x7f040001;
+        public static final int cube=0x7f040001;
+        public static final int death_file_1=0x7f040002;
+        public static final int per_pixel_vertex_shader=0x7f040003;
+        public static final int ping_pong_hero_theme=0x7f040004;
+        public static final int point_vertex_shader=0x7f040005;
+        public static final int sound_file_1=0x7f040006;
     }
     public static final class string {
         public static final int app_name=0x7f050000;

@@ -55,7 +55,7 @@ class MyGLSurfaceView extends GLSurfaceView implements SensorEventListener{
         setEGLContextClientVersion(2);
 
         // Set the Renderer for drawing on the GLSurfaceView
-        mRenderer = new MyGLRenderer();
+        mRenderer = new MyGLRenderer(context);
         setRenderer(mRenderer);
 
         mSensorManager = (SensorManager)context.getSystemService(Context.SENSOR_SERVICE);
@@ -112,6 +112,9 @@ class MyGLSurfaceView extends GLSurfaceView implements SensorEventListener{
             float axisX = event.values[0];
             float axisY = event.values[1];
             float axisZ = event.values[2];
+             mRenderer.axisx=axisX;
+             mRenderer.axisy=axisY;
+             mRenderer.axisz=axisZ;
 
 
             // Calculate the angular speed of the sample
@@ -126,13 +129,13 @@ class MyGLSurfaceView extends GLSurfaceView implements SensorEventListener{
             }
 
             mSensorManager.getQuaternionFromVector(mRenderer.quat,event.values);
-        /*
-            Log.i("Sensor Orientation GyroScope", "axisX: " + mRenderer.quat[0] + //
-                    " axisY: " +mRenderer.quat[1] + //
-                    " axisZ: " + mRenderer.quat[2]+
-                    "omegamagnitude" +omegaMagnitude
-                    );
-           */
+
+        //   Log.i("Sensor Orientation GyroScope", "axisX: " + axisX +
+        //           " axisY: " +axisY +
+        //           " axisZ: " + axisZ+
+        //           "omegamagnitude" +omegaMagnitude
+        //           );
+
         }
         timestamp = event.timestamp;
 
@@ -149,7 +152,7 @@ class MyGLSurfaceView extends GLSurfaceView implements SensorEventListener{
 
 
        if(file==0) {
-           MediaPlayer mp = MediaPlayer.create(OpenGLES20Activity.getAppContext(), R.raw.bayo_after_burner);
+           MediaPlayer mp = MediaPlayer.create(OpenGLES20Activity.getAppContext(), R.raw.ping_pong_hero_theme);
 
 
            if (mp.isPlaying()) {
@@ -206,6 +209,7 @@ class MyGLSurfaceView extends GLSurfaceView implements SensorEventListener{
         float y = e.getY();
 
         switch (e.getAction()) {
+            //need to add thread safe technique of que runnable.
             case MotionEvent.ACTION_MOVE:
 
                 float dx = x - mPreviousX;
