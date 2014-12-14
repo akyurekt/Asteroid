@@ -47,7 +47,7 @@ public class Triangle
 //End Test
                     "void main() {" +
 //"gl_FragColor = vColor;" +
-                    "gl_FragColor = (vColor * texture2D(u_Texture, v_TexCoordinate));" +
+                    "gl_FragColor = (texture2D(u_Texture, v_TexCoordinate));" +
                     "}";
 
     private final int shaderProgram;

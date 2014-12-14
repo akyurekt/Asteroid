@@ -16,10 +16,24 @@
 -->
 <resources>
 
-    <string name="hello">Hello, OpenGL ES 2.0!</string>
+    <string name="hello">Astroids</string>
     <string name="app_name">Astroids</string>
     <string name="menu_title">Main Menu</string>
-
-    <string name="model_viewer_title">Start Game</string>
-    <string name="model_viewer_subtitle">View and compare the planes</string>
+    <string name="model_viewer_title">test test</string>
+    <string name="start_game_title">Start Game</string>
+    <string name="start_game_subtitle">View and compare the planes</string>
+    <string name="leaderboards_title">Leaderboards</string>
+    <string name="leaderboard_subtitile">Compare your score</string>
+    <string name="user_title">Enter name</string>
+    <string name="user_subtitle">Enter your name to add to Leaderboards</string>
+    <string name="user_name">name of user</string>
+    <string name="enter_name">Enter Player Name</string>
+    <string name="hard_mode">Hard Mode</string>
+    <string name="easy_mode">Easy Mode</string>
+    <string name="select_stage">Select Stage</string>
+    <string name="how_to_play">How to Play</string>
+    <string name="how_to_play_title">(1) Tilt the phone to move the spaceship</string>
+    <string name="how_to_play_main_title">HOW TO PLAY</string>
+    <string name="how_to_control_image">how to control</string>
+    <string name="navigate_to_avoid_astroids">(2) Navigate to avoid asteroids</string>
 </resources>

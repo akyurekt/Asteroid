@@ -15,7 +15,14 @@
  */
 package com.example.android.opengl.test;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.opengl.GLES20;
+import android.opengl.GLUtils;
+
+import com.example.android.opengl.Menu;
+import com.example.android.opengl.R;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -26,6 +33,9 @@ import java.nio.ShortBuffer;
  * A two-dimensional square for use as a drawn object in OpenGL ES 2.0.
  */
 public class Skybox {
+
+    //Reference to Activity Context
+    private final Context mActivityContext;
 
     private final String vertexShaderCode =
             // This matrix member variable provides a hook to manipulate
@@ -38,6 +48,7 @@ public class Skybox {
                     // The matrix must be included as a modifier of gl_Position.
                     // Note that the uMVPMatrix factor *must be first* in order
                     // for the matrix multiplication product to be correct.
+                    "v_TexCoordinate = a_TexCoordinate;"+
                     "  gl_Position = uMVPMatrix * vPosition;" +
 
                     "}";
@@ -46,9 +57,9 @@ public class Skybox {
             "precision mediump float;" +
                     "uniform vec4 vColor;" +
                     "uniform sampler2D u_Texture;  "+
-
+                    "varying vec2 v_TexCoordinate; "+
                     "void main() {" +
-                    "  gl_FragColor = vColor;" +
+                    "  gl_FragColor = ( texture2D(u_Texture, v_TexCoordinate));" +
                     "}";
 
     private final FloatBuffer vertexBuffer;
@@ -58,39 +69,23 @@ public class Skybox {
     private int mColorHandle;
     private int mMVPMatrixHandle;
 
+    private final FloatBuffer mSkyboxTextureCoordinates;
+    private int mTextureUniformHandle;
+    private int mTextureCoordinateHandle;
+    private final int mTextureCoordinateDataSize = 2;
+    private int mTextureDataHandle;
+
     // number of coordinates per vertex in this array
     static final int COORDS_PER_VERTEX = 3;
     static float squareCoords[] = {
-            // front
-            -1.0f, -1.0f, 1.0f,
-            1.0f, -1.0f, 1.0f,
-            1.0f, 1.0f, 1.0f,
-            -1.0f, 1.0f, 1.0f,
-            // back
-            -1.0f, -1.0f, -1.0f,
-            1.0f, -1.0f, -1.0f,
-            1.0f, 1.0f, -1.0f,
-            -1.0f, 1.0f, -1.0f
+            -1.0f,  1.0f, 0.0f,  // 0, Top Left
+            -1.0f, -1.0f, 0.0f,  // 1, Bottom Left
+            1.0f, -1.0f, 0.0f,  // 2, Bottom Right
+            1.0f,  1.0f, 0.0f,  // 3, Top Right
     };
 
     private final short drawOrder[] = {// front
-            0, 1, 2,
-            2, 3, 0,
-            // top
-            3, 2, 6,
-            6, 7, 3,
-            // back
-            7, 6, 5,
-            5, 4, 7,
-            // bottom
-            4, 5, 1,
-            1, 0, 4,
-            // left
-            4, 0, 3,
-            3, 7, 4,
-            // right
-            1, 5, 6,
-            6, 2, 1, }; // order to draw vertices
+            0, 1, 2 ,0,2,3 }; // order to draw vertices
 
     private final int vertexStride = COORDS_PER_VERTEX * 4; // 4 bytes per vertex
 
@@ -101,17 +96,30 @@ public class Skybox {
             0.289f, 0.212f, 0.434f, 1f,
 
 
-            // back colors1f,
-            0.289f, 0.212f, 0.434f, 1f,
-            0.289f, 0.212f, 0.434f, 1f,
-            0.289f, 0.212f, 0.434f, 1f,
-            0.289f, 0.212f, 0.434f, 1f,
+
     };
 
     /**
      * Sets up the drawing object data for use in an OpenGL ES context.
      */
-    public Skybox() {
+    public Skybox(final Context activityContext) {
+
+        mActivityContext = activityContext;
+
+        final float[] SkyboxTextureCoordinateData =
+                {
+                        1f,0f,
+                        1f,1f,
+                        0f,1f,
+                        0f,0f,
+
+
+
+
+                };
+
+
+
         // initialize vertex byte buffer for shape coordinates
         ByteBuffer bb = ByteBuffer.allocateDirect(
                 // (# of coordinate values * 4 bytes per float)
@@ -120,6 +128,10 @@ public class Skybox {
         vertexBuffer = bb.asFloatBuffer();
         vertexBuffer.put(squareCoords);
         vertexBuffer.position(0);
+
+        mSkyboxTextureCoordinates = ByteBuffer.allocateDirect(SkyboxTextureCoordinateData.length * 4).order(ByteOrder.nativeOrder()).asFloatBuffer();
+        mSkyboxTextureCoordinates.put(SkyboxTextureCoordinateData);
+        mSkyboxTextureCoordinates.position(0);
 
         // initialize byte buffer for the draw list
         ByteBuffer dlb = ByteBuffer.allocateDirect(
@@ -141,8 +153,56 @@ public class Skybox {
         mProgram = GLES20.glCreateProgram();             // create empty OpenGL Program
         GLES20.glAttachShader(mProgram, vertexShader);   // add the vertex shader to program
         GLES20.glAttachShader(mProgram, fragmentShader); // add the fragment shader to program
+
+
+        GLES20.glBindAttribLocation(mProgram, 0, "a_TexCoordinate");
+
         GLES20.glLinkProgram(mProgram);                  // create OpenGL program executables
+
+        if(Menu.stagenumber==0)
+        mTextureDataHandle = loadTexture(mActivityContext, R.drawable.space);
+        if(Menu.stagenumber==1)
+            mTextureDataHandle = loadTexture(mActivityContext, R.drawable.space2);
+
     }
+
+    public static int loadTexture(final Context context, final int resourceId)
+    {
+        final int[] textureHandle = new int[1];
+
+        GLES20.glGenTextures(1, textureHandle, 0);
+
+        if (textureHandle[0] != 0)
+        {
+            final BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inScaled = false;   // No pre-scaling
+
+            // Read in the resource
+            final Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), resourceId, options);
+
+            // Bind to the texture in OpenGL
+            GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, textureHandle[0]);
+
+            // Set filtering
+            GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MIN_FILTER, GLES20.GL_NEAREST);
+            GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MAG_FILTER, GLES20.GL_NEAREST);
+
+            // Load the bitmap into the bound texture.
+            GLUtils.texImage2D(GLES20.GL_TEXTURE_2D, 0, bitmap, 0);
+
+            // Recycle the bitmap, since its data has been loaded into OpenGL.
+            bitmap.recycle();
+        }
+
+        if (textureHandle[0] == 0)
+        {
+            throw new RuntimeException("Error loading texture.");
+        }
+
+        return textureHandle[0];
+    }
+
+
 
     /**
      * Encapsulates the OpenGL ES instructions for drawing this shape.
@@ -171,6 +231,25 @@ public class Skybox {
 
         // Set color for drawing the triangle
         GLES20.glUniform4fv(mColorHandle, 1, color, 0);
+
+        //Set Texture Handles and bind Texture
+        mTextureUniformHandle = GLES20.glGetAttribLocation(mProgram, "u_Texture");
+        mTextureCoordinateHandle = GLES20.glGetAttribLocation(mProgram, "a_TexCoordinate");
+
+        //Set the active texture unit to texture unit 0.
+        GLES20.glActiveTexture(GLES20.GL_TEXTURE0);
+
+        //Bind the texture to this unit.
+        GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, mTextureDataHandle);
+
+        //Tell the texture uniform sampler to use this texture in the shader by binding to texture unit 0.
+        GLES20.glUniform1i(mTextureUniformHandle, 0);
+
+        //Pass in the texture coordinate information
+        mSkyboxTextureCoordinates.position(0);
+        GLES20.glVertexAttribPointer(mTextureCoordinateHandle, mTextureCoordinateDataSize, GLES20.GL_FLOAT, false, 0, mSkyboxTextureCoordinates);
+        GLES20.glEnableVertexAttribArray(mTextureCoordinateHandle);
+
 
         // get handle to shape's transformation matrix
         mMVPMatrixHandle = GLES20.glGetUniformLocation(mProgram, "uMVPMatrix");

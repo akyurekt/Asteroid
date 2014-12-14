@@ -82,21 +82,36 @@ public class Ship {
 
     private final int vertexStride = COORDS_PER_VERTEX * 4; // 4 bytes per vertex
 
-    float color[] = { 0f, 1f, 0f, 1f,
-                        0f, 0f, 1f, 1f,
+    float color[] = {   1f, 0f, 0f, 1f,
                         1f, 0f, 0f, 1f,
-                        0f, 1f, 1f, 1f,
-                        0f, 1f, 0f, 1f,
-                        0f, 1f, 0f, 1f,
-                        0f, 1f, 0f, 1f,
-                        0f, 1f, 0f, 1f,
-                        0f, 1f, 0f, 1f,
-                        0f, 1f, 0f, 1f,};
+                        1f, 0f, 0f, 1f,
+                        1f, 0f, 0f, 1f,
+                        1f, 0f, 0f, 1f,
+                        1f, 0f, 0f, 1f,
+                        1f, 0f, 0f, 1f,
+                        1f, 0f, 0f, 1f,
+                        1f, 0f, 0f, 1f,
+                        1f, 0f, 0f, 1f,};
+
+    float color2[] = {0f, 1f, 0f, 1f,
+                      0f, 1f, 0f, 1f,
+                      0f, 1f, 0f, 1f,
+                      0f, 1f, 0f, 1f,
+                      0f, 1f, 0f, 1f,
+                      0f, 1f, 0f, 1f,
+                      0f, 1f, 0f, 1f,
+                      0f, 1f, 0f, 1f,
+                      0f, 1f, 0f, 1f,
+                      0f, 1f, 0f, 1f,
+
+
+                                        };
 
     /**
      * Sets up the drawing object data for use in an OpenGL ES context.
      */
     public Ship() {
+
         // initialize vertex byte buffer for shape coordinates
         ByteBuffer bb = ByteBuffer.allocateDirect(
         // (# of coordinate values * 4 bytes per float)
@@ -155,6 +170,9 @@ public class Ship {
         mColorHandle = GLES20.glGetUniformLocation(mProgram, "vColor");
 
         // Set color for drawing the triangle
+        if(OpenGLES20Activity.ifnormal)
+        GLES20.glUniform4fv(mColorHandle, 1, color2, 0);
+        else
         GLES20.glUniform4fv(mColorHandle, 1, color, 0);
 
         // get handle to shape's transformation matrix

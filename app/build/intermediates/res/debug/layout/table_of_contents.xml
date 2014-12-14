@@ -1,17 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
- <LinearLayout 
+ <FrameLayout
  	xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-
+    android:layout_height="match_parent"
+    android:id="@+id/menu_background"
+    android:background="@drawable/space"
+    >
 
      <ListView
          android:stackFromBottom="true"
      	android:id="@android:id/list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-         android:background="@drawable/menu_background" />
- </LinearLayout>
-<!-- From: file:/C:/Users/Thomas/Desktop/HelloOpenGLES203/app/src/main/res/layout/table_of_contents.xml -->
+          />
+
+ </FrameLayout>
+<!-- From: file:/C:/Users/Thomas/Desktop/Asteroid/app/src/main/res/layout/table_of_contents.xml -->

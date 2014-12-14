@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/3dgame.git.iml" filepath="$PROJECT_DIR$/3dgame.git.iml" />
+      <module fileurl="file://$PROJECT_DIR$/A`.iml" filepath="$PROJECT_DIR$/A`.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Asteroid.iml" filepath="$PROJECT_DIR$/Asteroid.iml" />
       <module fileurl="file://$PROJECT_DIR$/HelloOpenGLES203.iml" filepath="$PROJECT_DIR$/HelloOpenGLES203.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
