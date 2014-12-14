@@ -16,10 +16,8 @@
 package com.example.android.opengl.test;
 
 import android.app.Activity;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -27,20 +25,16 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
-import android.os.IBinder;
 import android.util.Log;
 import android.widget.TextView;
+
+import com.example.android.opengl.R;
+import com.example.android.opengl.Score;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
-
-import com.example.android.opengl.R;
-import com.example.android.opengl.Score;
-import com.example.android.opengl.user;
-
-import java.text.SimpleDateFormat;
 import java.util.List;
 
 public class OpenGLES20Activity extends Activity implements SensorEventListener {

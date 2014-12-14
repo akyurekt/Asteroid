@@ -13,18 +13,17 @@ public final class R {
     public static final class drawable {
         public static final int asteroids=0x7f020000;
         public static final int astroid=0x7f020001;
-        public static final int bumpy_bricks_public_domain=0x7f020002;
-        public static final int ic_launcher=0x7f020003;
-        public static final int icon_border=0x7f020004;
-        public static final int menu_background=0x7f020005;
-        public static final int move=0x7f020006;
-        public static final int phonearrows=0x7f020007;
-        public static final int space=0x7f020008;
-        public static final int space2=0x7f020009;
-        public static final int space2_icon=0x7f02000a;
-        public static final int space_icon=0x7f02000b;
-        public static final int speedup=0x7f02000c;
-        public static final int you_died=0x7f02000d;
+        public static final int ic_launcher=0x7f020002;
+        public static final int icon_border=0x7f020003;
+        public static final int menu_background=0x7f020004;
+        public static final int move=0x7f020005;
+        public static final int phonearrows=0x7f020006;
+        public static final int space=0x7f020007;
+        public static final int space2=0x7f020008;
+        public static final int space2_icon=0x7f020009;
+        public static final int space_icon=0x7f02000a;
+        public static final int speedup=0x7f02000b;
+        public static final int you_died=0x7f02000c;
     }
     public static final class id {
         public static final int Title=0x7f060016;
@@ -56,25 +55,27 @@ public final class R {
     public static final class layout {
         public static final int activity_high=0x7f030000;
         public static final int howtoplay=0x7f030001;
-        public static final int stageicon=0x7f030002;
-        public static final int stageselect=0x7f030003;
-        public static final int surfaceview=0x7f030004;
-        public static final int table_of_contents=0x7f030005;
-        public static final int toc_item=0x7f030006;
-        public static final int user=0x7f030007;
+        public static final int main=0x7f030002;
+        public static final int stageicon=0x7f030003;
+        public static final int stageselect=0x7f030004;
+        public static final int surfaceview=0x7f030005;
+        public static final int table_of_contents=0x7f030006;
+        public static final int toc_item=0x7f030007;
+        public static final int user=0x7f030008;
     }
     public static final class raw {
         public static final int bayo_after_burner=0x7f040000;
         public static final int bayo_dance=0x7f040001;
         public static final int chaos_code=0x7f040002;
         public static final int cube=0x7f040003;
-        public static final int mario=0x7f040004;
-        public static final int megaman=0x7f040005;
-        public static final int ping_pong_hero_theme=0x7f040006;
-        public static final int snake_death=0x7f040007;
-        public static final int sound_file_1=0x7f040008;
-        public static final int tank=0x7f040009;
-        public static final int you_died=0x7f04000a;
+        public static final int death_file_1=0x7f040004;
+        public static final int mario=0x7f040005;
+        public static final int megaman=0x7f040006;
+        public static final int ping_pong_hero_theme=0x7f040007;
+        public static final int snake_death=0x7f040008;
+        public static final int sound_file_1=0x7f040009;
+        public static final int tank=0x7f04000a;
+        public static final int you_died=0x7f04000b;
     }
     public static final class string {
         public static final int app_name=0x7f050000;

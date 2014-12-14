@@ -571,26 +571,26 @@ public class    MyGLRenderer implements GLSurfaceView.Renderer {
         //draw and position the astreoids
 
 
-        float pos1 = 2500f - timex;
-        float pos2 = 1700f - timex;
-        float pos3 = 1500f - timex;
-        float pos4 = 2000f - timex;
+        float pos1 = 250f - timex;
+        float pos2 = 170f - timex;
+        float pos3 = 150f - timex;
+        float pos4 = 200f - timex;
 
-        float pos5 = 2750f - timex2;
-        float pos6 = 3000f - timex2;
-        float pos7 = 3500f - timex2;
-        float pos8 = 4000f - timex2;
+        float pos5 = 275f - timex2;
+        float pos6 = 300f - timex2;
+        float pos7 = 350f - timex2;
+        float pos8 = 400f - timex2;
 
 
-        float pos9=2250f-timex;
-        float pos10=1600f-timex;
-        float pos11=3750f-timex2;
-        float pos12=3250f-timex2;
+        float pos9=225f-timex;
+        float pos10=160-timex;
+        float pos11=375-timex2;
+        float pos12=325-timex2;
 
-        float pos13=1800f-timex;
-        float pos14=2400f-timex;
-        float pos15=2900f-timex2;
-        float pos16=2600f-timex2;
+        float pos13=180f-timex;
+        float pos14=240f-timex;
+        float pos15=290f-timex2;
+        float pos16=260f-timex2;
         //  Log.i("pos1", pos5 + " pos6 " + pos6);
 
         //if asstroids are behind,reset the time and set number of asstroids to 4
@@ -883,7 +883,7 @@ public class    MyGLRenderer implements GLSurfaceView.Renderer {
 
         // this projection matrix is applied to object coordinates
         // in the onDrawFrame() method
-        Matrix.frustumM(mProjectionMatrix, 0, -ratio, ratio, -1, 1, 1, 10000);
+        Matrix.frustumM(mProjectionMatrix, 0, -ratio, ratio, -1, 1, 1, 100);
         testLogMessage();
 
 
