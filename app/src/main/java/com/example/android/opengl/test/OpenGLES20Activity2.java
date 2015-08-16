@@ -47,10 +47,16 @@ public class OpenGLES20Activity2 extends Activity implements SensorEventListener
 
     private static final float NS2S = 1.0f / 1000000000.0f;
     private float timestamp;
-    public float aceelerator_dx;
-    public float aceelerator_dy;
+    public double aceelerator_dx;
+    public double aceelerator_dy;
     public float prev_axisx;
     public float prev_axisy;
+
+    public int sensornumber=0;
+    public float firstx;
+    public float firsty;
+
+
 
     private SharedPreferences gamePrefs;
     public static final String GAME_PREFS = "ArithmeticFile";
@@ -60,7 +66,7 @@ public class OpenGLES20Activity2 extends Activity implements SensorEventListener
     public static boolean ifhard=false;
     public static boolean ifnormal=false;
 
-    static final float ALPHA = 0.15f;
+    static final float ALPHA = 0.f;
 
 
 
@@ -247,34 +253,64 @@ public class OpenGLES20Activity2 extends Activity implements SensorEventListener
         // Log.i("sensor", "test"+event);
         // This timestep's delta rotation to be multiplied by the current rotation
         // after computing it from the gyro sample data.
+      //  if(sensornumber==1) {
+      //      firstx=event.values[0];
+      //      firsty=event.values[1];
+//
+      //  }
+//
         if (timestamp != 0) {
             final float dT = (event.timestamp - timestamp) * NS2S;
             // Axis of the rotation sample, not normalized yet.
             float axisX = event.values[0];
             float axisY = event.values[1];
             float axisZ = event.values[2];
-               aceelerator_dx=axisX-prev_axisx;
-               aceelerator_dy =axisY-prev_axisy;
-//
-            MyGLRenderer.axisx = axisX + ALPHA * (prev_axisx - axisX);
-            MyGLRenderer.axisy = axisY + ALPHA * (prev_axisy - axisY);
-                if(axisX>5)
-                    axisX=5;
-                if(axisX<-5)
-                    axisX=-5;
-                 if(axisY>5)
-                     axisY=5;
-                 if(axisY<-5)
-                     axisY=-5;
 
-                 MyGLRenderer.axisx=axisX;
-                 Log.i("axisx", "here" + axisX);
-                 MyGLRenderer.axisy=axisY;
-                  Log.i("axisy", "here" + axisY);
+            axisX=axisX-firstx;
+            axisY=axisY-firsty;
+
+               aceelerator_dx=Math.sqrt((axisX-prev_axisx)*(axisX-prev_axisx));
+               aceelerator_dy =Math.sqrt((axisY-prev_axisy)*(axisY-prev_axisy));
+
+
+                   if (axisX>4)
+                       axisX=4;
+                   if(axisX<-4)
+                      axisX=-4;
+                    if(axisY>4)
+                       axisY=4;
+                   if(axisY<-4)
+                      axisY=-4;
+            if(aceelerator_dx<0.15) {
+               // MyGLRenderer.axisx = prev_axisx;
+
+            }
+            else {
+                Log.i("axisx  difference", "here" + aceelerator_dx);
+                MyGLRenderer.axisx = axisX;
+
+            }
+            if(aceelerator_dy<0.15) {
+            } // MyGLRenderer.axisy=prev_axisy;
+            else {
+                MyGLRenderer.axisy = axisY;
+
+            }
+
+            prev_axisx=axisX;
+            prev_axisy=axisY;
+
+                // MyGLRen1erer.axisx=axisX;
+
+               //  MyGLRenderer.axisy=axisY;
+                  //Log.i("axisy", "here" + axisY);
+
+
+
 
 //
-                  prev_axisx=axisX;
-                  prev_axisy=axisY;
+
+
 
             //  ((MyGLSurfaceView)this.getApplication()).setpositions(axisX,axisY);
             // MyGLSurfaceView.So
@@ -297,6 +333,8 @@ public class OpenGLES20Activity2 extends Activity implements SensorEventListener
 
         }
         timestamp = event.timestamp;
+        sensornumber++;
+      // Log.i("timestamp ", "here" + sensornumber);
 
     }
 

@@ -78,10 +78,10 @@ public class Skybox {
     // number of coordinates per vertex in this array
     static final int COORDS_PER_VERTEX = 3;
     static float squareCoords[] = {
-            -1.0f,  1.0f, 0.0f,  // 0, Top Left
-            -1.0f, -1.0f, 0.0f,  // 1, Bottom Left
-            1.0f, -1.0f, 0.0f,  // 2, Bottom Right
-            1.0f,  1.0f, 0.0f,  // 3, Top Right
+           -1000.0f,  1000.0f, 0.0f,  // 0, Top Left
+           -1000.0f, -1000.0f, 0.0f,  // 1, Bottom Left
+            1000.0f, -1000.0f, 0.0f,  // 2, Bottom Right
+            1000.0f,  1000.0f, 0.0f,  // 3, Top Right
     };
 
     private final short drawOrder[] = {// front
@@ -160,9 +160,9 @@ public class Skybox {
         GLES20.glLinkProgram(mProgram);                  // create OpenGL program executables
 
         if(Menu.stagenumber==0)
-        mTextureDataHandle = loadTexture(mActivityContext, R.drawable.space);
+        mTextureDataHandle = loadTexture(mActivityContext, R.drawable.space_high);
         if(Menu.stagenumber==1)
-            mTextureDataHandle = loadTexture(mActivityContext, R.drawable.space2);
+            mTextureDataHandle = loadTexture(mActivityContext, R.drawable.space2_high);
 
     }
 

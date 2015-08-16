@@ -87,19 +87,9 @@
         android:layout_below="@+id/textView4"
         android:layout_centerHorizontal="true"  />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textStyle="bold"
-        android:textColor="#FFFFFF"
-        android:paddingTop="5dp"
-        android:text=""
-        android:id="@+id/textView5"
-        android:layout_below="@+id/imageView2"
-        android:layout_centerHorizontal="true"  />
+
 
 
 </RelativeLayout>
 
-</ScrollView><!-- From: file:/C:/Users/Thomas/Desktop/Asteroid/app/src/main/res/layout/howtoplay.xml -->
+</ScrollView><!-- From: file:/C:/Users/Thomas/Desktop/New%20folder/Asteroid/app/src/main/res/layout/howtoplay.xml -->

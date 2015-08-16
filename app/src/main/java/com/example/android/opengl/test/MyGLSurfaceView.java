@@ -16,17 +16,12 @@
 package com.example.android.opengl.test;
 
 import android.content.Context;
-import android.content.Intent;
 import android.hardware.Sensor;
-import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.media.MediaPlayer;
 import android.opengl.GLSurfaceView;
 import android.util.AttributeSet;
 import android.util.Log;
-
-import com.example.android.opengl.R;
 
 /**
  * A view container where OpenGL ES graphics can be drawn on screen.
@@ -72,8 +67,7 @@ import com.example.android.opengl.R;
         mRenderer = new MyGLRenderer(context);
         setRenderer(mRenderer);
 
-        mSensorManager = (SensorManager)context.getSystemService(Context.SENSOR_SERVICE);
-        mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+
 
             // mSensor=mSensorManager.getSensorList(Sensor.TYPE_GYROSCOPE).get(0);
           //  mSensorManager.registerListener(this,mSensor,SensorManager.SENSOR_DELAY_NORMAL);

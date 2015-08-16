@@ -47,8 +47,8 @@ public class OpenGLES20Activity extends Activity implements SensorEventListener 
 
     private static final float NS2S = 1.0f / 1000000000.0f;
     private float timestamp;
-    public float aceelerator_dx;
-    public float aceelerator_dy;
+    public double aceelerator_dx;
+    public double aceelerator_dy;
     public float prev_axisx;
     public float prev_axisy;
 
@@ -121,6 +121,7 @@ public class OpenGLES20Activity extends Activity implements SensorEventListener 
 
 
             MyGLRenderer.loopcounter_increment=0.003f;
+        MyGLRenderer.loopcounter=.5f;
             Log.i("easy mode", "here");
 
 //
@@ -253,21 +254,34 @@ public class OpenGLES20Activity extends Activity implements SensorEventListener 
             float axisX = event.values[0];
             float axisY = event.values[1];
             float axisZ = event.values[2];
-               aceelerator_dx=axisX-prev_axisx;
-               aceelerator_dy =axisY-prev_axisy;
+            aceelerator_dx=Math.sqrt((axisX-prev_axisx)*(axisX-prev_axisx));
+            aceelerator_dy =Math.sqrt((axisY-prev_axisy)*(axisY-prev_axisy));
 //
             MyGLRenderer.axisx = axisX + ALPHA * (prev_axisx - axisX);
             MyGLRenderer.axisy = axisY + ALPHA * (prev_axisy - axisY);
-                if(axisX>5)
-                    axisX=5;
-                if(axisX<-5)
-                    axisX=-5;
+                if(axisX>2.5)
+                    axisX=2.5f;
+                if(axisX<-2.5)
+                    axisX=-2.5f;
                  if(axisY>5)
                      axisY=5;
                  if(axisY<-5)
                      axisY=-5;
-                 MyGLRenderer.axisx=axisX;
-                 MyGLRenderer.axisy=axisY;
+            if(aceelerator_dx<0.07) {
+                // MyGLRenderer.axisx = prev_axisx;
+
+            }
+            else {
+              //  Log.i("axisx  difference", "here" + aceelerator_dx);
+                MyGLRenderer.axisx = axisX;
+
+            }
+            if(aceelerator_dy<0.07) {
+            } // MyGLRenderer.axisy=prev_axisy;
+            else {
+                MyGLRenderer.axisy = axisY;
+
+            }
 
 //
                   prev_axisx=axisX;

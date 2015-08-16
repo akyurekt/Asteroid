@@ -10,7 +10,7 @@ import com.example.android.opengl.R;
 /**
  * Created by Thomas on 08/12/2014.
  */
-public class high2 extends Activity {
+public class High2 extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

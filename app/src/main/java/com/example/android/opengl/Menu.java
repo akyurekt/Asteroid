@@ -1,10 +1,5 @@
 package com.example.android.opengl;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import android.app.Activity;
 import android.app.ListActivity;
 import android.content.Intent;
@@ -15,10 +10,15 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.SimpleAdapter;
-import android.widget.Toast;
 
+import com.example.android.opengl.test.MyGLRenderer;
 import com.example.android.opengl.test.OpenGLES20Activity;
 import com.example.android.opengl.test.OpenGLES20Activity2;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 
@@ -145,6 +145,7 @@ public class Menu extends ListActivity
         }
 
         super.onResume();
+        MyGLRenderer.loopcounter=0.5f;
     }
 
 }

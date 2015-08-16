@@ -15,12 +15,12 @@
  */
 package com.example.android.opengl.test;
 
+import android.opengl.GLES20;
+
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 import java.nio.ShortBuffer;
-
-import android.opengl.GLES20;
 
 /**
  * A two-dimensional square for use as a drawn object in OpenGL ES 2.0.
@@ -57,20 +57,16 @@ public class Ship {
     // number of coordinates per vertex in this array
     static final int COORDS_PER_VERTEX = 3;
     static float squareCoords[] = {
-            3.0f, 0.0f, 0.0f,   // top left
-            0.0f, 3.0f, -3.0f,   // bottom left
-            0.0f, 0.0f, 10.0f,   // bottom right
-            -3.0f, 0.0f, 0.0f,     // top right
-
-                //BACK FACE
-            3.2f, -1.0f, -3.0f,   // top left
-            3.2f, -1.0f, 11.0f,   // bottom left
-            2.0f, 1.0f, 2.0f,
-
-
-            -3.2f, -1.0f, -3.0f,
-            -3.2f, -1.0f, 11.0f,
-            -2.0f, 1.0f, 2.0f,  }; // top right
+            0.3750f, 0.0f, 0.0f,   // top left
+            0.0f, 0.375f, -0.375f,   // bottom left
+            0.0f, 0.0f, 1.25f,   // bottom right
+            -0.375f, 0.0f, 0.0f,     // top right
+            0.4f, -0.125f, -0.375f,   // top left
+            0.4f, -0.375f, 1.1250f,   // bottom left
+            0.25f, 0.125f, 0.25f,
+           -0.4f, -0.125f, -.375f,
+            -0.4f, -0.125f, 1.125f,
+            -0.25f, 0.125f, 0.25f,  }; // top right
 
     private final short drawOrder[] = { 0, 1, 2,    // fuselage
                                         2, 1, 3,

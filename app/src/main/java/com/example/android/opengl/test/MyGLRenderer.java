@@ -1,4 +1,5 @@
 package com.example.android.opengl.test;
+
 import android.content.Context;
 import android.media.MediaPlayer;
 import android.opengl.GLES20;
@@ -19,10 +20,9 @@ import javax.microedition.khronos.opengles.GL10;
 public class    MyGLRenderer implements GLSurfaceView.Renderer {
 
     private static final String TAG = "MyGLRenderer";
-    private Triangle mTriangle;
-    private Triangle mTriangle2;
+    private GameOver mGameOver;
     private Ship mShip;
-    private Cube mCube;
+    private Asteroid mAsteroid;
     private Skybox mSkybox;
 
     // mMVPMatrix is an abbreviation for "Model View Projection Matrix"
@@ -30,13 +30,12 @@ public class    MyGLRenderer implements GLSurfaceView.Renderer {
     private final float[] mProjectionMatrix = new float[16];
     private final float[] mViewMatrix = new float[16];
     private final float[] mRotationMatrix = new float[16];
-    private final float[] temporarymatrix = new float[16];
-    public float x;
-    public float y;
-    public boolean iftouch = false;
-    public boolean ifzoom = false;
-    public boolean ifpinch = false;
-    public float counter = 1;
+   // public float x;
+   // public float y;
+   // public boolean iftouch = false;
+   // public boolean ifzoom = false;
+   // public boolean ifpinch = false;
+   // public float counter = 1;
     private float[] mTempMatrix = new float[16];
     public float timex = 1;
     public float timex2 = 1;
@@ -54,7 +53,7 @@ public class    MyGLRenderer implements GLSurfaceView.Renderer {
     public float axisz;
     public boolean collision = true;
 
-    public float ypos1 = 2.5f;
+    public float ypos1 = 2.50f;
     public float xpos1 = 0f;
     public float xpos2 = 2.5f;
     public float ypos2 = 0f;
@@ -97,14 +96,16 @@ public class    MyGLRenderer implements GLSurfaceView.Renderer {
 
 
 
-    public static float loopcounter=1;
+    public static  float loopcounter=0.5f;
 
    public static  MediaPlayer mp2=null ;
-    private static int length=0;
-    public int mediaplayervalue=0;
-    public float screenheight;
+   public float screenheight;
     public float screenwidth;
-    public static float loopcounter_increment=0.03f;
+    public static float loopcounter_increment=0.5f;
+    public final float collision_distance=0.5f;
+
+    public final float lower_bound=2.5f;
+    public final float upper_bound=3.4f;
 
 
 
@@ -135,9 +136,9 @@ public class    MyGLRenderer implements GLSurfaceView.Renderer {
         // mTriangle2 = new Triangle();
 
         mShip = new Ship();
-        mCube = new Cube(mActivityContext);
+        mAsteroid = new Asteroid(mActivityContext);
         mSkybox = new Skybox(mActivityContext);
-        mTriangle = new Triangle(mActivityContext);
+        mGameOver = new GameOver(mActivityContext);
 
         collision = false;
       //
@@ -177,15 +178,21 @@ public class    MyGLRenderer implements GLSurfaceView.Renderer {
         //else black screen
         else {
             isalive=false;
+           // int j =2;
 
             sound(counterofdeath);
             counterofdeath++;
-            GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
-            Matrix.setLookAtM(mViewMatrix, 0, 0, 0, -3, 0f, 0f, 0f, 0f, 1.0f, 0.0f);
-            Matrix.multiplyMM(mMVPMatrix, 0, mProjectionMatrix, 0, mViewMatrix, 0);
-            Matrix.scaleM(mMVPMatrix, 0, 2f, 3f, 2f);
-            mTriangle.Draw(mMVPMatrix);
-            loopcounter=1;
+           // if(j==3)
+        //   // {
+        //        GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
+        //        Matrix.setLookAtM(mViewMatrix, 0, 0, 0, -1, 0f, 0f, 0f, 0f, 1.0f, 0.0f);
+        //        Matrix.multiplyMM(mMVPMatrix, 0, mProjectionMatrix, 0, mViewMatrix, 0);
+        //        Matrix.scaleM(mMVPMatrix, 0, 2f, 3f, 2f);
+        //        Matrix.translateM(mMVPMatrix, 0, 0f, 0f, 1f);
+        //        mGameOver.Draw(mMVPMatrix);
+        //        loopcounter = .1f;
+
+         //   }
 
 
         }
@@ -220,7 +227,8 @@ public class    MyGLRenderer implements GLSurfaceView.Renderer {
 
         // Draw background color
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
-        Matrix.setLookAtM(mViewMatrix, 0, 0, 0, -3, 0f, 0f, 0f, 0f, 1.0f, 0.0f);
+        Matrix.setLookAtM(mViewMatrix, 0, 0, 0, -2, 0f, 0f, 0f, 0f, 1.0f, 0.0f);
+
 
        // Matrix.translateM(mViewMatrix,0,axisx,axisy,0f);
 
@@ -228,9 +236,9 @@ public class    MyGLRenderer implements GLSurfaceView.Renderer {
 
         //skybox
         mTempMatrix = mMVPMatrix.clone();
-        Matrix.scaleM(mTempMatrix, 0, 4f, 4f, 4f);
-       // Matrix.translateM(mTempMatrix,0,0f,0f,0f);
-        mSkybox.draw(mTempMatrix);
+        //Matrix.scaleM(mTempMatrix, 0, 4f, 4f, 4f);
+         Matrix.translateM(mTempMatrix,0,0f,0f,990f);
+          mSkybox.draw(mTempMatrix);
 
 
         //  Calculate the projection and view transformation
@@ -241,15 +249,16 @@ public class    MyGLRenderer implements GLSurfaceView.Renderer {
         //  scratch=mMVPMatrix.clone();
         Matrix.multiplyMM(scratch, 0, mMVPMatrix, 0, mRotationMatrix, 0);
         //  Matrix.scaleM(scratch,1,0.1f,0.1f,0.1f);
-        Matrix.scaleM(mMVPMatrix, 0, 0.5f, 0.5f, 0.5f);
+      //  Matrix.scaleM(mMVPMatrix, 0, 0.5f, 0.5f, 0.5f);
 
         //draw and position the astreoids
 
 
-        float pos1 = 250f - timex;
+        float pos1 = 150f - timex;
+       //float  pos1=150f;
         float pos2 = 170f - timex;
-        float pos3 = 150f - timex;
-        float pos4 = 200f - timex;
+        float pos3 = 200f - timex;
+        float pos4 = 250f - timex;
 
         float pos5 = 275f - timex2;
         float pos6 = 300f - timex2;
@@ -271,7 +280,7 @@ public class    MyGLRenderer implements GLSurfaceView.Renderer {
 
         //if asstroids are behind,reset the time and set number of asstroids to 4
         if ((numberofass < 0)) {
-            timex = timex - 350f;
+            timex = timex - 250f;
             numberofass = 4;
 
             //new seeds.securerandom has better seed and longer bit
@@ -288,19 +297,21 @@ public class    MyGLRenderer implements GLSurfaceView.Renderer {
 
 
             //use it obtain value.using min +(max-min) *seed
-            float randomValue1 = -5f + (5f + 5f) * x1.nextFloat();//anywhere in the whole screen
+            float randomValue1 = -2.5f + (2.5f + 2.5f) * x1.nextFloat();//anywhere in the whole screen
             float randomValue2 = -5f + (5f + 5f) * y1.nextFloat();//anywhere in the whole screen
-            float randomValue3 = -5f + (5f + 5f) * x2.nextFloat();//anywhere in the whole screen
+            float randomValue3 = -2.5f + (2.5f + 2.5f) * x2.nextFloat();//anywhere in the whole screen
             float randomValue4 = -5f + (5f + 5f) * y2.nextFloat();//anywhere in the whole screen
-            float randomValue5 = -5f + (5f + 5f) * x3.nextFloat();//anywhere in the whole screen
+            float randomValue5 = -2.5f + (2.5f + 2.5f) * x3.nextFloat();//anywhere in the whole screen
             float randomValue6 = -5f + (5f + 5f) * y3.nextFloat();//anywhere in the whole screen
-            float randomValue7 = -5f + (5f + 5f) * x4.nextFloat();//anywhere in the whole screen
+            float randomValue7 = -2.5f + (2.5f + 2.5f) * x4.nextFloat();//anywhere in the whole screen
             float randomValue8 = -5f + (5f + 5f) * y4.nextFloat();//anywhere in the whole screen
 //
 
 //
-            xpos1 = randomValue1;
-            ypos1 = randomValue2;
+             xpos1 = randomValue1;
+             ypos1 = randomValue2;
+           // xpos1=0f;
+           // ypos1=0f;
             ypos2 = randomValue3;
             xpos2 = randomValue4;
             ypos3 = randomValue5;
@@ -316,7 +327,7 @@ public class    MyGLRenderer implements GLSurfaceView.Renderer {
 
         if((numberofass2 < 0)) {
             timex2 = timex2 - 350f;
-            numberofass2 = 4;
+            numberofass2 = 1;
 
             SecureRandom x5 = new SecureRandom();
             SecureRandom y5 = new SecureRandom();
@@ -328,13 +339,13 @@ public class    MyGLRenderer implements GLSurfaceView.Renderer {
             SecureRandom y8 = new SecureRandom();
 
 
-            float randomValue9 = -5f + (1f + 5f) * x5.nextFloat();//top left quad.x max is 0
+            float randomValue9 = -2.5f + (1f + 2.5f) * x5.nextFloat();//top left quad.x max is 0
             float randomValue10 = 1 + (5f - 1) * y5.nextFloat();//top left quad.y min is 0
-            float randomValue11 = 1f + (5f - 1f) * x6.nextFloat();//top right quad.x min is 0
+            float randomValue11 = 1f + (2.5f - 1f) * x6.nextFloat();//top right quad.x min is 0
             float randomValue12 = 1 + (5f - 1) * y6.nextFloat();//top right quad.y min is 0
-            float randomValue13 = -5f + ((1 + 5f) * x7.nextFloat());//bottom left quad.x max is 0
+            float randomValue13 = -2.5f + ((1 + 2.5f) * x7.nextFloat());//bottom left quad.x max is 0
             float randomValue14 = -5f + (-1 + 5f) * y7.nextFloat();//bottom left quad.y max is 0
-            float randomValue15 = 1 + (5f - 1) * x8.nextFloat();     //bottom right quad.x min is 0
+            float randomValue15 = 1 + (2.5f - 1) * x8.nextFloat();     //bottom right quad.x min is 0
             float randomValue16 = -5f + ((-1 + 5) * y8.nextFloat());//bottom right quad.y max is 0
             // Log.i("x", randomValue15 + "  y " + randomValue16  );
 
@@ -355,164 +366,190 @@ public class    MyGLRenderer implements GLSurfaceView.Renderer {
 
 
         //if the first cube has passed the screen decrese number of cubes and wait a bit
-        if ((260f - timex) < 0) {
+        if ((249f - timex) < -2) {
             numberofass--;
-            if(loopcounter<10f)
+            if(loopcounter<7f)
             loopcounter = loopcounter + loopcounter_increment;
-            Log.i("loopcounter", loopcounter + " loopcounter   " + loopcounter);
+           // Log.i("loopcounter", loopcounter + " loopcounter   " + loopcounter);
         }
 
         if((410f-timex2)<0) {
             numberofass2--;
-            if(loopcounter<10f)
+            if(loopcounter<7f)
                 loopcounter=loopcounter+loopcounter_increment;
 
-            Log.i("loopcounter", loopcounter + " loopcounter   " + loopcounter);
+           // Log.i("loopcounter", loopcounter + " loopcounter   " + loopcounter);
         }
       //  Log.i("number of ass  ", numberofass2 + " pos6 " + numberofass2);
 
-        mTempMatrix = mMVPMatrix.clone();
+
+      //  for(int j=0;j<8;j++)
+      //  {
+      //      mTempMatrix = mMVPMatrix.clone();
+//
+      //      mAsteroid.draw(mTempMatrix);
+      //  }
+         mTempMatrix = mMVPMatrix.clone();
         Matrix.translateM(mTempMatrix, 0, xpos1, ypos1, pos1);
-       mCube.draw(mTempMatrix);
+        //Log.i(" + ", "position one " + pos1 + "        " + timex);
+        mAsteroid.draw(mTempMatrix);
 
-       mTempMatrix = mMVPMatrix.clone();
-       Matrix.translateM(mTempMatrix, 0, xpos2, ypos2, pos2);
-       mCube.draw(mTempMatrix);
+         mTempMatrix = mMVPMatrix.clone();
+         Matrix.translateM(mTempMatrix, 0, xpos2, ypos2, pos2);
+         mAsteroid.draw(mTempMatrix);
 
-       mTempMatrix = mMVPMatrix.clone();
-       Matrix.translateM(mTempMatrix, 0, xpos3, ypos3, pos3);
-       mCube.draw(mTempMatrix);
+         mTempMatrix = mMVPMatrix.clone();
+         Matrix.translateM(mTempMatrix, 0, xpos3, ypos3,pos3);
+         mAsteroid.draw(mTempMatrix);
 
-       mTempMatrix = mMVPMatrix.clone();
-       Matrix.translateM(mTempMatrix, 0, xpos4, ypos4, pos4);
-       mCube.draw(mTempMatrix);
-
-
-       mTempMatrix = mMVPMatrix.clone();
-        Matrix.scaleM(mTempMatrix,0,0.6f,0.6f,0.6f);
-       Matrix.translateM(mTempMatrix, 0, xpos5, ypos5, pos5);
-       mCube.draw(mTempMatrix);
-
-       mTempMatrix = mMVPMatrix.clone();
-        Matrix.scaleM(mTempMatrix,0,0.6f,0.6f,0.6f);
-       Matrix.translateM(mTempMatrix, 0, xpos6, ypos6, pos6);
-       mCube.draw(mTempMatrix);
-
-       mTempMatrix = mMVPMatrix.clone();
-        Matrix.scaleM(mTempMatrix,0,0.6f,0.6f,0.6f);
-       Matrix.translateM(mTempMatrix, 0, xpos7, ypos7, pos7);
-       mCube.draw(mTempMatrix);
-
-        mTempMatrix = mMVPMatrix.clone();
-        Matrix.scaleM(mTempMatrix,0,0.6f,0.6f,0.6f);
-        Matrix.translateM(mTempMatrix, 0, xpos8, ypos8, pos8);
-        mCube.draw(mTempMatrix);
+         mTempMatrix = mMVPMatrix.clone();
+         Matrix.translateM(mTempMatrix, 0, xpos4, ypos4, pos4);
+         mAsteroid.draw(mTempMatrix);
 
 
-        //dummy asteroids
-        mTempMatrix = mMVPMatrix.clone();
-        Matrix.scaleM(mTempMatrix,0,0.6f,0.6f,0.6f);
-        Matrix.translateM(mTempMatrix, 0, xpos9, ypos9, pos9);
-        mCube.draw(mTempMatrix);
+         mTempMatrix = mMVPMatrix.clone();
+         // Matrix.scaleM(mTempMatrix,0,0.6f,0.6f,0.6f);
+         Matrix.translateM(mTempMatrix, 0, xpos5, ypos5, pos5);
+         mAsteroid.draw(mTempMatrix);
 
-        mTempMatrix = mMVPMatrix.clone();
-        Matrix.scaleM(mTempMatrix,0,0.6f,0.6f,0.6f);
-        Matrix.translateM(mTempMatrix, 0, xpos10, ypos10, pos10);
-        mCube.draw(mTempMatrix);
+         mTempMatrix = mMVPMatrix.clone();
+         // Matrix.scaleM(mTempMatrix,0,0.6f,0.6f,0.6f);
+         Matrix.translateM(mTempMatrix, 0, xpos6, ypos6, pos6);
+         mAsteroid.draw(mTempMatrix);
 
-        mTempMatrix = mMVPMatrix.clone();
-        Matrix.scaleM(mTempMatrix,0,0.6f,0.6f,0.6f);
-        Matrix.translateM(mTempMatrix, 0, xpos11, ypos11, pos11);
-        mCube.draw(mTempMatrix);
+         mTempMatrix = mMVPMatrix.clone();
+         // Matrix.scaleM(mTempMatrix,0,0.6f,0.6f,0.6f);
+         Matrix.translateM(mTempMatrix, 0, xpos7, ypos7, pos7);
+         mAsteroid.draw(mTempMatrix);
 
-        mTempMatrix = mMVPMatrix.clone();
-        Matrix.scaleM(mTempMatrix,0,0.6f,0.6f,0.6f);
-        Matrix.translateM(mTempMatrix, 0, xpos12, ypos12, pos12);
-        mCube.draw(mTempMatrix);
+          mTempMatrix = mMVPMatrix.clone();
+         // Matrix.scaleM(mTempMatrix,0,0.6f,0.6f,0.6f);
+          Matrix.translateM(mTempMatrix, 0, xpos8, ypos8, pos8);
+          mAsteroid.draw(mTempMatrix);
 
-        mTempMatrix = mMVPMatrix.clone();
-        Matrix.scaleM(mTempMatrix,0,0.6f,0.6f,0.6f);
-        Matrix.translateM(mTempMatrix, 0, xpos13, ypos13, pos13);
-        mCube.draw(mTempMatrix);
 
-        mTempMatrix = mMVPMatrix.clone();
-        Matrix.scaleM(mTempMatrix,0,0.6f,0.6f,0.6f);
-        Matrix.translateM(mTempMatrix, 0, xpos14, ypos14, pos14);
-        mCube.draw(mTempMatrix);
-
-        mTempMatrix = mMVPMatrix.clone();
-        Matrix.scaleM(mTempMatrix,0,0.6f,0.6f,0.6f);
-        Matrix.translateM(mTempMatrix, 0, xpos15, ypos15, pos15);
-        mCube.draw(mTempMatrix);
-
-        mTempMatrix = mMVPMatrix.clone();
-        Matrix.scaleM(mTempMatrix,0,0.6f,0.6f,0.6f);
-        Matrix.translateM(mTempMatrix, 0, xpos16, ypos16, pos16);
-        mCube.draw(mTempMatrix);
+     //   //dummy asteroids
+     //   mTempMatrix = mMVPMatrix.clone();
+     //   Matrix.scaleM(mTempMatrix,0,0.6f,0.6f,0.6f);
+     //   Matrix.translateM(mTempMatrix, 0, xpos9, ypos9, pos9);
+     //   mAsteroid.draw(mTempMatrix);
+//
+     //   mTempMatrix = mMVPMatrix.clone();
+     //   Matrix.scaleM(mTempMatrix,0,0.6f,0.6f,0.6f);
+     //   Matrix.translateM(mTempMatrix, 0, xpos10, ypos10, pos10);
+     //   mAsteroid.draw(mTempMatrix);
+//
+     //   mTempMatrix = mMVPMatrix.clone();
+     //   Matrix.scaleM(mTempMatrix,0,0.6f,0.6f,0.6f);
+     //   Matrix.translateM(mTempMatrix, 0, xpos11, ypos11, pos11);
+     //   mAsteroid.draw(mTempMatrix);
+//
+     //   mTempMatrix = mMVPMatrix.clone();
+     //   Matrix.scaleM(mTempMatrix,0,0.6f,0.6f,0.6f);
+     //   Matrix.translateM(mTempMatrix, 0, xpos12, ypos12, pos12);
+     //   mAsteroid.draw(mTempMatrix);
+//
+     //   mTempMatrix = mMVPMatrix.clone();
+     //   Matrix.scaleM(mTempMatrix,0,0.6f,0.6f,0.6f);
+     //   Matrix.translateM(mTempMatrix, 0, xpos13, ypos13, pos13);
+     //   mAsteroid.draw(mTempMatrix);
+//
+     //   mTempMatrix = mMVPMatrix.clone();
+     //   Matrix.scaleM(mTempMatrix,0,0.6f,0.6f,0.6f);
+     //   Matrix.translateM(mTempMatrix, 0, xpos14, ypos14, pos14);
+     //   mAsteroid.draw(mTempMatrix);
+//
+     //   mTempMatrix = mMVPMatrix.clone();
+     //   Matrix.scaleM(mTempMatrix,0,0.6f,0.6f,0.6f);
+     //   Matrix.translateM(mTempMatrix, 0, xpos15, ypos15, pos15);
+     //   mAsteroid.draw(mTempMatrix);
+//
+     //   mTempMatrix = mMVPMatrix.clone();
+     //   Matrix.scaleM(mTempMatrix,0,0.6f,0.6f,0.6f);
+     //   Matrix.translateM(mTempMatrix, 0, xpos16, ypos16, pos16);
+     //   mAsteroid.draw(mTempMatrix);
 
 
 
 
         // Draw square
-        Matrix.scaleM(scratch, 0, 0.05f, 0.05f, 0.05f);
-        Matrix.translateM(scratch, 0, axisx * 5, axisy * 5, 0f);
-       // Log.i("xaxis", axisx + " yaxis   " + axisy);
+         //    Matrix.scaleM(scratch, 0, 0.05f, 0.05f, 0.05f);
+        Matrix.translateM(scratch, 0, axisx , axisy , 3f);
+
 
         //collisions test variables
         //finding distance between astroids and ship
-        float distancebet1 = ((axisx - xpos1) * (axisx - xpos1)) + ((axisy - ypos1) * (axisy - ypos1));
-        float distancebet2 = ((axisx - xpos2) * (axisx - xpos2)) + ((axisy - ypos2) * (axisy - ypos2));
-        float distancebet3 = ((axisx - xpos3) * (axisx - xpos3)) + ((axisy - ypos3) * (axisy - ypos3));
-        float distancebet4 = ((axisx - xpos4) * (axisx - xpos4)) + ((axisy - ypos4) * (axisy - ypos4));
-
-        float distancebet5 = ((axisx - xpos5) * (axisx - xpos5)) + ((axisy - ypos5) * (axisy - ypos5));
-        float distancebet6 = ((axisx - xpos6) * (axisx - xpos6)) + ((axisy - ypos6) * (axisy - ypos6));
-        float distancebet7 = ((axisx - xpos7) * (axisx - xpos7)) + ((axisy - ypos7) * (axisy - ypos7));
-        float distancebet8 = ((axisx - xpos8) * (axisx - xpos8)) + ((axisy - ypos8) * (axisy - ypos8));
+        double distancebet1 =Math.sqrt(((axisx - xpos1) * (axisx - xpos1)) + ((axisy - ypos1) * (axisy - ypos1)));
+        double distancebet2 =Math.sqrt(((axisx - xpos2) * (axisx - xpos2)) + ((axisy - ypos2) * (axisy - ypos2)));
+        double distancebet3 =Math.sqrt(((axisx - xpos3) * (axisx - xpos3)) + ((axisy - ypos3) * (axisy - ypos3)));
+        double distancebet4 =Math.sqrt(((axisx - xpos4) * (axisx - xpos4)) + ((axisy - ypos4) * (axisy - ypos4)));
+        double distancebet5 =Math.sqrt(((axisx - xpos5) * (axisx - xpos5)) + ((axisy - ypos5) * (axisy - ypos5)));
+        double distancebet6 =Math.sqrt(((axisx - xpos6) * (axisx - xpos6)) + ((axisy - ypos6) * (axisy - ypos6)));
+        double distancebet7 =Math.sqrt(((axisx - xpos7) * (axisx - xpos7)) + ((axisy - ypos7) * (axisy - ypos7)));
+        double distancebet8 =Math.sqrt(((axisx - xpos8) * (axisx - xpos8)) + ((axisy - ypos8) * (axisy - ypos8)));
 
 
    //testing for collision
-     if (pos1 > 0 && pos1 < 10) {
-         if (distancebet1 < 2) {
-             collision = true;
-         }
-     }
-     if (pos2 > 0 && pos2 < 10) {
-         if (distancebet2 < 2) {
-             collision = true;
-         }
-     }
-     if (pos3 > 0 && pos3 < 10) {
-         if (distancebet3 < 2) {
-             collision = true;
-         }
-     }
-     if (pos4 > 0 && pos4 < 10) {
-         if (distancebet4 < 2) {
-             collision = true;
-         }
-     }
-     if (pos5 > 0 && pos5 < 10) {
-         if (distancebet5 < 2) {
-             collision = true;
-         }
-     }
-     if (pos6 > 0 && pos6 < 10) {
-         if (distancebet6 < 2) {
-             collision = true;
-         }
-     }
-     if (pos7 > 0 && pos7 < 10) {
-         if (distancebet7 < 2) {
-             collision = true;
-         }
-     }
-     if (pos8 > 0 && pos8 < 10) {
-         if (distancebet8 < 2) {
-             collision = true;
-         }
-     }
 
+
+
+     if (pos1 > lower_bound && pos1 < upper_bound) {
+             if (distancebet1 < collision_distance) {
+                 Log.i("xaxis", axisx  + " yaxis   " + axisy   + "distance between them " +   distancebet1);
+                 Log.i("The", "collision  " + "pos1"  +distancebet1 + "    "+xpos1 +  "    "+  ypos1          );
+             collision = true;
+         }
+      }
+      if (pos2 >  lower_bound&& pos2 < upper_bound) {
+          if (distancebet2 < collision_distance) {
+              Log.i("xaxis", axisx  + " yaxis   " + axisy   + "distance between them " +   distancebet2);
+              Log.i("The", "collision  " + "pos2" +distancebet2     + "    "+xpos2 +  "    "+  ypos2);
+              collision = true;
+          }
+      }
+      if (pos3 >  lower_bound && pos3 < upper_bound) {
+          if (distancebet3 < collision_distance) {
+              Log.i("xaxis", axisx  + " yaxis   " + axisy   + "distance between them " +   distancebet3);
+              Log.i("The", "collision  " + "pos3"+distancebet3      + "    "+xpos3 +  "    "+  ypos3    );
+              collision = true;
+          }
+      }
+      if (pos4 > lower_bound && pos4 < upper_bound) {
+          if (distancebet4 < collision_distance) {
+              Log.i("xaxis", axisx  + " yaxis   " + axisy   + "distance between them " +   distancebet4);
+              Log.i("The", "collision  " + "pos4"+distancebet4      + "    "+xpos4 +  "    "+  ypos4        );
+              collision = true;
+          }
+      }
+      if (pos5 > lower_bound && pos5 < upper_bound) {
+          if (distancebet5 < collision_distance) {
+              Log.i("xaxis", axisx  + " yaxis   " + axisy   + "distance between them " +   distancebet5);
+              Log.i("The", "collision  " + "pos5"+distancebet5      + "    "+xpos5 +  "    "+  ypos5        );
+              collision = true;
+          }
+      }
+      if (pos6 > lower_bound && pos6 < upper_bound) {
+          if (distancebet6 <collision_distance) {
+              Log.i("xaxis", axisx  + " yaxis   " + axisy   + "distance between them " +   distancebet6);
+              Log.i("The", "collision  " + "pos6"+distancebet6      + "    "+xpos6 +  "    "+  ypos6        );
+              collision = true;
+          }
+      }
+      if (pos7 > lower_bound && pos7 < upper_bound) {
+          if (distancebet7 < collision_distance) {
+              Log.i("xaxis", axisx  + " yaxis   " + axisy   + "distance between them " +   distancebet7);
+              Log.i("The", "collision  " + "pos7"+distancebet7      + "    "+xpos7 +  "    "+  ypos7        );
+              collision = true;
+          }
+      }
+      if (pos8 >lower_bound && pos8 < upper_bound) {
+          if (distancebet8 < collision_distance) {
+              Log.i("xaxis", axisx  + " yaxis   " + axisy   + "distance between them " +   distancebet8);
+              Log.i("The", "collision  " + "pos8"+distancebet8      + "    "+xpos8 +  "    "+  ypos8            );
+              collision = true;
+          }
+      }
+       // Log.i("The", "time   " + timex);
 
      //   Log.i("The", "collision  " + collision);
         // Log.i("xpos1", "ypos1 " + xpos1 + ypos1 );
@@ -520,6 +557,8 @@ public class    MyGLRenderer implements GLSurfaceView.Renderer {
             isalive=true;
             mShip.draw(scratch);
         } else {
+
+
 
             sound(counterofdeath);
             counterofdeath++;
@@ -553,9 +592,9 @@ public class    MyGLRenderer implements GLSurfaceView.Renderer {
 
         //skybox
         mTempMatrix = mMVPMatrix.clone();
-        Matrix.scaleM(mTempMatrix, 0, 4f, 4f, 4f);
-        // Matrix.translateM(mTempMatrix,0,0f,0f,0f);
-        mSkybox.draw(mTempMatrix);
+       // Matrix.scaleM(mTempMatrix, 0, 40f, 40f, 40f);
+         Matrix.translateM(mTempMatrix,0,0f,0f,990f);
+          mSkybox.draw(mTempMatrix);
 
 
         //  Calculate the projection and view transformation
@@ -683,7 +722,7 @@ public class    MyGLRenderer implements GLSurfaceView.Renderer {
             numberofass--;
             if(loopcounter<10f)
                 loopcounter = loopcounter + loopcounter_increment;
-            Log.i("loopcounter", loopcounter + " loopcounter   " + loopcounter);
+          //  Log.i("loopcounter", loopcounter + " loopcounter   " + loopcounter);
         }
 
         if((410f-timex2)<0) {
@@ -691,7 +730,7 @@ public class    MyGLRenderer implements GLSurfaceView.Renderer {
             if(loopcounter<10f)
                 loopcounter=loopcounter+loopcounter_increment;
 
-            Log.i("loopcounter", loopcounter + " loopcounter   " + loopcounter);
+           // Log.i("loopcounter", loopcounter + " loopcounter   " + loopcounter);
         }
         //  Log.i("number of ass  ", numberofass2 + " pos6 " + numberofass2);
 
@@ -699,83 +738,83 @@ public class    MyGLRenderer implements GLSurfaceView.Renderer {
         Matrix.scaleM(mTempMatrix,0,0.6f,0.6f,0.6f);
 
         Matrix.translateM(mTempMatrix, 0,xpos1, ypos1, pos1);
-         mCube.draw(mTempMatrix);
+         mAsteroid.draw(mTempMatrix);
 //
            mTempMatrix = mMVPMatrix.clone();
             Matrix.scaleM(mTempMatrix,0,0.6f,0.6f,0.6f);
            Matrix.translateM(mTempMatrix, 0, xpos2, ypos2, pos2);
-           mCube.draw(mTempMatrix);
+           mAsteroid.draw(mTempMatrix);
 ////
            mTempMatrix = mMVPMatrix.clone();
             Matrix.scaleM(mTempMatrix,0,0.6f,0.6f,0.6f);
            Matrix.translateM(mTempMatrix, 0, xpos3, ypos3, pos3);
-           mCube.draw(mTempMatrix);
+           mAsteroid.draw(mTempMatrix);
 ////
            mTempMatrix = mMVPMatrix.clone();
             Matrix.scaleM(mTempMatrix,0,0.6f,0.6f,0.6f);
            Matrix.translateM(mTempMatrix, 0, xpos4, ypos4, pos4);
-           mCube.draw(mTempMatrix);
+           mAsteroid.draw(mTempMatrix);
 ////
 ////
            mTempMatrix = mMVPMatrix.clone();
            Matrix.scaleM(mTempMatrix,0,0.6f,0.6f,0.6f);
            Matrix.translateM(mTempMatrix, 0, xpos5, ypos5, pos5);
-           mCube.draw(mTempMatrix);
+           mAsteroid.draw(mTempMatrix);
 ////
            mTempMatrix = mMVPMatrix.clone();
            Matrix.scaleM(mTempMatrix,0,0.6f,0.6f,0.6f);
            Matrix.translateM(mTempMatrix, 0, xpos6, ypos6, pos6);
-           mCube.draw(mTempMatrix);
+           mAsteroid.draw(mTempMatrix);
 //
          mTempMatrix = mMVPMatrix.clone();
          Matrix.scaleM(mTempMatrix,0,0.6f,0.6f,0.6f);
          Matrix.translateM(mTempMatrix, 0, xpos7,ypos7, pos7);
-         mCube.draw(mTempMatrix);
+         mAsteroid.draw(mTempMatrix);
 ////
          mTempMatrix = mMVPMatrix.clone();
          Matrix.scaleM(mTempMatrix,0,0.6f,0.6f,0.6f);
          Matrix.translateM(mTempMatrix, 0,xpos8,ypos8, pos8);
-         mCube.draw(mTempMatrix);
+         mAsteroid.draw(mTempMatrix);
 
         mTempMatrix = mMVPMatrix.clone();
         Matrix.scaleM(mTempMatrix,0,0.6f,0.6f,0.6f);
         Matrix.translateM(mTempMatrix, 0, xpos9, ypos9, pos9);
-        mCube.draw(mTempMatrix);
+        mAsteroid.draw(mTempMatrix);
 
         mTempMatrix = mMVPMatrix.clone();
         Matrix.scaleM(mTempMatrix,0,0.6f,0.6f,0.6f);
         Matrix.translateM(mTempMatrix, 0, xpos10, ypos10, pos10);
-        mCube.draw(mTempMatrix);
+        mAsteroid.draw(mTempMatrix);
 
         mTempMatrix = mMVPMatrix.clone();
         Matrix.scaleM(mTempMatrix,0,0.6f,0.6f,0.6f);
         Matrix.translateM(mTempMatrix, 0, xpos11, ypos11, pos11);
-        mCube.draw(mTempMatrix);
+        mAsteroid.draw(mTempMatrix);
 
         mTempMatrix = mMVPMatrix.clone();
         Matrix.scaleM(mTempMatrix,0,0.6f,0.6f,0.6f);
         Matrix.translateM(mTempMatrix, 0, xpos12, ypos12, pos12);
-        mCube.draw(mTempMatrix);
+        mAsteroid.draw(mTempMatrix);
 
         mTempMatrix = mMVPMatrix.clone();
         Matrix.scaleM(mTempMatrix,0,0.6f,0.6f,0.6f);
         Matrix.translateM(mTempMatrix, 0, xpos13, ypos13, pos13);
-        mCube.draw(mTempMatrix);
+        mAsteroid.draw(mTempMatrix);
 
         mTempMatrix = mMVPMatrix.clone();
         Matrix.scaleM(mTempMatrix,0,0.6f,0.6f,0.6f);
         Matrix.translateM(mTempMatrix, 0, xpos14, ypos14, pos14);
-        mCube.draw(mTempMatrix);
+        mAsteroid.draw(mTempMatrix);
 
         mTempMatrix = mMVPMatrix.clone();
         Matrix.scaleM(mTempMatrix,0,0.6f,0.6f,0.6f);
         Matrix.translateM(mTempMatrix, 0, xpos15, ypos15, pos15);
-        mCube.draw(mTempMatrix);
+        mAsteroid.draw(mTempMatrix);
 
         mTempMatrix = mMVPMatrix.clone();
         Matrix.scaleM(mTempMatrix,0,0.6f,0.6f,0.6f);
         Matrix.translateM(mTempMatrix, 0, xpos16, ypos16, pos16);
-        mCube.draw(mTempMatrix);
+        mAsteroid.draw(mTempMatrix);
 
 
 
@@ -783,8 +822,8 @@ public class    MyGLRenderer implements GLSurfaceView.Renderer {
 
 
         // Draw square
-        Matrix.scaleM(scratch, 0, 0.05f, 0.05f, 0.05f);
-        Matrix.translateM(scratch, 0, axisx * 5, axisy * 5, 0f);
+      //  Matrix.scaleM(scratch, 0, 0.05f, 0.05f, 0.05f);
+        Matrix.translateM(scratch, 0, axisx , axisy , 0f);
         prev_axisx=axisx;
         prev_axisy=axisy;
         // Log.i("xaxis", axisx*5 + " yaxis   " + axisy*5);
@@ -856,6 +895,8 @@ public class    MyGLRenderer implements GLSurfaceView.Renderer {
             sound(counterofdeath);
             counterofdeath++;
 
+
+
             //code to finish the acitivity after a delay
             // activity.finish();
         }
@@ -883,7 +924,7 @@ public class    MyGLRenderer implements GLSurfaceView.Renderer {
 
         // this projection matrix is applied to object coordinates
         // in the onDrawFrame() method
-        Matrix.frustumM(mProjectionMatrix, 0, -ratio, ratio, -1, 1, 1, 100);
+        Matrix.frustumM(mProjectionMatrix, 0, -ratio, ratio, -1, 1, 1, 1000);
         testLogMessage();
 
 
@@ -901,7 +942,14 @@ public class    MyGLRenderer implements GLSurfaceView.Renderer {
      */
     public static int loadShader(int type, String shaderCode) {
 
-          //  GLES20.glEnable(GLES20.GL_CULL_FACE);
+           GLES20.glEnable(GLES20.GL_CULL_FACE);
+              GLES20.glCullFace(GLES20.GL_FRONT);
+        // Enable depth buffer
+        //
+         GLES20.glEnable(GLES20.GL_DEPTH_TEST);
+
+        // Enable back face culling
+       // GLES20.glEnable(GLES20.GL_CULL_FACE);
         // create a vertex shader type (GLES20.GL_VERTEX_SHADER)
         // or a fragment shader type (GLES20.GL_FRAGMENT_SHADER)
         int shader = GLES20.glCreateShader(type);

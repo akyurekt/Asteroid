@@ -1,14 +1,10 @@
 package com.example.android.opengl;
 
 import android.app.Activity;
-
 import android.os.Bundle;
-import android.widget.GridView;
-
 import android.view.View;
 import android.widget.AdapterView;
-
-import android.widget.Toast;
+import android.widget.GridView;
 
 
 
@@ -17,7 +13,7 @@ public class stageselection extends Activity {
     GridView grid;
     String[] web = {
             "Stage 1",
-            "stage 2"
+            "Stage 2"
 
     } ;
     int[] imageId = {
@@ -49,7 +45,7 @@ public class stageselection extends Activity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
-                Toast.makeText(stageselection.this, "You selected " +web[position], Toast.LENGTH_SHORT).show();
+              //  Toast.makeText(stageselection.this, "You selected " +web[position], Toast.LENGTH_SHORT).show();
                 View background = findViewById(R.id.stage_background);
                 Menu.stagenumber=position;
                 if(position==0) {

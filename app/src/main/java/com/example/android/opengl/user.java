@@ -1,10 +1,8 @@
 package com.example.android.opengl;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
@@ -27,7 +25,7 @@ public  class user extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.user);
+        setContentView(R.layout.user_name);
 
          myPrefs = this.getSharedPreferences("userfile", MODE_WORLD_READABLE);
          username = myPrefs.getString("username","user1");
