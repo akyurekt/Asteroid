@@ -5,20 +5,20 @@ Fun 3D obstacle avoidance android game made as part of 3rd year project using Op
 ![Alt text](http://i.imgur.com/px3m3eO.png "Optional title")  ![Alt text](http://i.imgur.com/9h2sTye.png "Optional title")  <br />
 
 
-#Personally responsible for <br />
-*Asteroid algorithm. <br />
-*UI. <br />
-*Collision detection. <br />
-*Stage selection. <br />
-*Scoring and offline leaderboards utilising shared preferences. <br />
-*The movement of the spaceship with accelerometer. <br />
-*Testing and debugging. <br />
+## Personally responsible for
+* Asteroid algorithm. 
+* UI. 
+* Collision detection. 
+* Stage selection. 
+* Scoring and offline leaderboards utilising shared preferences. 
+* The movement of the spaceship with accelerometer. 
+* Testing and debugging. 
 
-#Features <br />
-*Offline scoring and leaderboards <br />
-*stage selection and different asteroid algorithms <br />
-*Movement using the accelerometer <br />
-*Two different difficulty setting <br />
-*Music <br />
+## Features 
+* Offline scoring and leaderboards 
+* stage selection and different asteroid algorithms 
+* Movement using the accelerometer
+* Two different difficulty setting 
+* Music 
 
 
